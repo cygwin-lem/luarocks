@@ -403,10 +403,21 @@ local function make_defaults(lua_version, target_cpu, platforms, home)
       defaults.lib_extension = "so" -- can be overridden in the config file for mingw builds
       defaults.arch = "cygwin-"..target_cpu
       defaults.cmake_generator = "Unix Makefiles"
-      defaults.variables.CC = "echo -llua | xargs gcc"
-      defaults.variables.LD = "echo -llua | xargs gcc"
+      defaults.variables.CC = "gcc"
+      defaults.variables.LD = "gcc"
       defaults.variables.LIBFLAG = "-shared"
       defaults.link_lua_explicitly = true
+      defaults.external_deps_patterns = {
+         bin = { "?.exe", "?" },
+         lib = { "lib?.so", "lib?.so.*", "lib?.dll.a", "?.dll.a",
+                 "lib?.a", "cyg?.dll", "lib?.dll", "?.dll", "?.lib" },
+         include = { "?.h" }
+      }
+      defaults.runtime_external_deps_patterns = {
+         bin = { "?.exe", "?" },
+         lib = { "cyg?.dll", "?.dll", "lib?.dll" },
+         include = { "?.h" }
+      }
    end
 
    if platforms.msys then
